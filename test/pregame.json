@@ -1,0 +1,139 @@
+{
+	"provider": {
+		"name": "Dota 2",
+		"appid": 570,
+		"version": 44,
+		"timestamp": 1461062632
+	},
+	"map": {
+		"name": "dota",
+		"matchid": 0,
+		"game_time": 51,
+		"clock_time": -39,
+		"daytime": true,
+		"nightstalker_night": false,
+		"game_state": "DOTA_GAMERULES_STATE_PRE_GAME",
+		"win_team": "none",
+		"customgamename": "",
+		"ward_purchase_cooldown": 0
+	},
+	"player": {
+		"steamid": "76561198007555251",
+		"name": "blub_is_zirp",
+		"activity": "playing",
+		"kills": 0,
+		"deaths": 0,
+		"assists": 0,
+		"last_hits": 0,
+		"denies": 0,
+		"kill_streak": 0,
+		"team_name": "radiant",
+		"gold": 625,
+		"gold_reliable": 0,
+		"gold_unreliable": 625,
+		"gpm": 0,
+		"xpm": 0
+	},
+	"hero": {
+		"id": 4,
+		"name": "npc_dota_hero_bloodseeker",
+		"level": 1,
+		"alive": true,
+		"respawn_seconds": 0,
+		"buyback_cost": 101,
+		"buyback_cooldown": 0,
+		"health": 617,
+		"max_health": 617,
+		"health_percent": 100,
+		"mana": 234,
+		"max_mana": 234,
+		"mana_percent": 100,
+		"silenced": false,
+		"stunned": false,
+		"disarmed": false,
+		"magicimmune": false,
+		"hexed": false,
+		"muted": false,
+		"break": false,
+		"has_debuff": false
+	},
+	"abilities": {
+		"ability0": {
+			"name": "bloodseeker_bloodrage",
+			"level": 0,
+			"can_cast": false,
+			"passive": false,
+			"ability_active": true,
+			"cooldown": 0,
+			"ultimate": false
+		},
+		"ability1": {
+			"name": "bloodseeker_blood_bath",
+			"level": 0,
+			"can_cast": false,
+			"passive": false,
+			"ability_active": true,
+			"cooldown": 0,
+			"ultimate": false
+		},
+		"ability2": {
+			"name": "bloodseeker_thirst",
+			"level": 0,
+			"can_cast": false,
+			"passive": true,
+			"ability_active": true,
+			"cooldown": 0,
+			"ultimate": false
+		},
+		"ability3": {
+			"name": "bloodseeker_rupture",
+			"level": 0,
+			"can_cast": false,
+			"passive": false,
+			"ability_active": true,
+			"cooldown": 0,
+			"ultimate": true
+		},
+		"attributes": {
+			"level": 0
+		}
+	},
+	"items": {
+		"slot0": {
+			"name": "empty"
+		},
+		"slot1": {
+			"name": "empty"
+		},
+		"slot2": {
+			"name": "empty"
+		},
+		"slot3": {
+			"name": "empty"
+		},
+		"slot4": {
+			"name": "empty"
+		},
+		"slot5": {
+			"name": "empty"
+		},
+		"stash0": {
+			"name": "empty"
+		},
+		"stash1": {
+			"name": "empty"
+		},
+		"stash2": {
+			"name": "empty"
+		},
+		"stash3": {
+			"name": "empty"
+		},
+		"stash4": {
+			"name": "empty"
+		},
+		"stash5": {
+			"name": "empty"
+		}
+	}
+}
