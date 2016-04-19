@@ -3,22 +3,24 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
-var expressWs = require('express-ws')(app);
+require('express-ws')(app);
+var aggregator = require('./aggregator');
 
-var clients = [];
+var clients = {};
 
 app.use(bodyParser.json());
 app.use('/', express.static(__dirname + '/public'));
 
-app.post('/update', function(req, res){
+app.post('/', function(req, res){
   console.log(req.body);
-  //sendAll(req.body);
-  sendAll(JSON.stringify(req.body));
+  sendAll(req.body.map.matchid, aggregator.process(req.body));
   res.send();
 });
-app.ws('/updates', function(ws, req){
-  console.log('new guy!');
-  clients.push(ws);
+app.ws('/updates/:id', function(ws, req){
+  var id = req.params.id;
+  console.log('new guy! ' + id);
+  if(!clients[id]) { clients[id] = [] };
+  clients[id].push(ws);
 
   ws.on('message', function(msg){
     console.log('well hi, ' + msg);
@@ -31,11 +33,15 @@ var appPort = 8080;
 app.listen(appPort);
 console.log('Webserver running on port '+appPort);
 
-function sendAll(msg){
-  clients.forEach(function(ws){
+function sendAll(id, msg){
+  clients[id].forEach(function(ws){
     ws.send(msg);
   });
 }
+
+
+//http://cdn.dota2.com/apps/dota2/images/heroes/bloodseeker_full.png
+//http://cdn.dota2.com/apps/dota2/images/items/force_staff_lg.png
 
 
 

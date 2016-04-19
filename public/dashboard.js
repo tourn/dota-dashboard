@@ -1,24 +1,32 @@
 //(function(){
   "use strict";
+  var matchid = location.hash.substring(1);
   var content = document.getElementById("content");
   content.innerText = "Sup";
 
-  var ws = new WebSocket("ws://localhost:8080/updates", "dota-dashboard");
-  ws.onopen = function(){
-    //socket.send("hi from the browser!");
-    content.innerText = "Connected";
-  };
+  if(matchid !== ""){
+    var ws = new WebSocket("ws://"+location.host+"/updates/" + matchid, "dota-dashboard");
+    ws.onopen = function(){
+      //socket.send("hi from the browser!");
+      console.log("OPEN");
+      content.innerText = "Connected";
+    };
 
-  ws.onmessage = function(e){
-    content.innerText = e.data;
-  };
+    ws.onmessage = function(e){
+      console.log("MESSAGE" + e.data);
+      content.innerText = e.data;
+    };
 
-  ws.onerror = function(e){
-    console.log(e);
-    content.innerText = e.data;
-  };
+    ws.onerror = function(e){
+      console.log("ERROR" + e);
+      content.innerText = e.data;
+    };
 
-  ws.onclose = function(){
-    content.innerText = "Closed.";
-  };
+    ws.onclose = function(){
+      console.log("CLOSE");
+      content.innerText = "Closed.";
+    };
+  } else {
+    content.innerText = "No match-id";
+  }
 //})();
