@@ -4,9 +4,10 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 require('express-ws')(app);
-var aggregator = require('./aggregator');
+var Aggregator = require('./aggregator');
 
 var clients = {};
+var aggregator = new Aggregator();
 
 app.use(bodyParser.json());
 app.use('/', express.static(__dirname + '/public'));
@@ -19,7 +20,7 @@ app.post('/', function(req, res){
 app.ws('/updates/:id', function(ws, req){
   var id = req.params.id;
   console.log('new guy! ' + id);
-  if(!clients[id]) { clients[id] = [] };
+  if(!clients[id]) { clients[id] = []; }
   clients[id].push(ws);
 
   ws.on('message', function(msg){
@@ -29,13 +30,16 @@ app.ws('/updates/:id', function(ws, req){
 
 module.exports = app;
 
-var appPort = 8080;
+var appPort = 1234;
 app.listen(appPort);
 console.log('Webserver running on port '+appPort);
 
 function sendAll(id, msg){
   clients[id].forEach(function(ws){
-    ws.send(msg);
+    console.log("~~");
+    console.log(msg);
+    console.log("~~");
+    ws.send(JSON.stringify(msg));
   });
 }
 

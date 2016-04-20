@@ -1,8 +1,39 @@
 <!doctype HTML>
 <html>
+  <head>
+    <script src="handlebars.min.js"></script>
+    <script id="match-template" type="text/x-handlebars-template" src="match.handlebars">
+<div class="time">
+  {{clock_time}}
+</div>
+{{#each players}}
+  <div class="player">
+    {{{heroImage hero.name}}}
+    {{#with player}}
+    {{name}}
+    {{kills}} / {{deaths}} / {{assists}}
+    LH: {{last_hits}} DN: {{denies}}
+    Streak: {{kill_streak}}
+    Gold: {{gold}}
+    GPM: {{gpm}}
+    XPM: {{xpm}}
+    {{/with}}
+    <div class="items">
+    {{#each items}}
+      {{{itemImage name @key}}}
+    {{/each}}
+    </div>
+  </div>
+{{/each}}
+    </script>
+    <script></script>
+  </head>
   <body>
     <h1>Dota Dashboard</h1>
-    <div id="content">#</div>
+    <div id="content">
+      <input id="id" type="text" placeholder="match-id"/>
+      <button id="track">track</button>
+    </div>
     <script src="dashboard.js"></script>
   </body>
 </html>
