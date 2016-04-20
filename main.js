@@ -5,16 +5,22 @@ var bodyParser = require('body-parser');
 var app = express();
 require('express-ws')(app);
 var Aggregator = require('./aggregator');
+var Notifier = require('./notifier');
 
+var appPort = 1234;
+var update_interval_ms = 1000;
 var clients = {};
 var aggregator = new Aggregator();
+var notifier = new Notifier();
 
 app.use(bodyParser.json());
 app.use('/', express.static(__dirname + '/public'));
 
 app.post('/', function(req, res){
-  console.log(req.body);
-  sendAll(req.body.map.matchid, aggregator.process(req.body));
+  console.log("got update!");
+  var id = req.body.map.matchid;
+  aggregator.process(req.body);
+  notifier.process(id);
   res.send();
 });
 app.ws('/updates/:id', function(ws, req){
@@ -28,24 +34,27 @@ app.ws('/updates/:id', function(ws, req){
   });
 });
 
-module.exports = app;
-
-var appPort = 1234;
 app.listen(appPort);
 console.log('Webserver running on port '+appPort);
 
-function sendAll(id, msg){
-  clients[id].forEach(function(ws){
-    console.log("~~");
-    console.log(msg);
-    console.log("~~");
-    ws.send(JSON.stringify(msg));
+function sendUpdates(){
+  console.log("sendUpdates");
+  Object.keys(clients).forEach(function(matchid){
+    var matchClients = clients[matchid];
+    var match = aggregator.get(matchid);
+    console.log("match " + matchid);
+    var count = 0;
+    matchClients.forEach(function(ws){
+      if(ws.readyState === 1){
+        count++;
+        ws.send(JSON.stringify(match));
+      } else {
+        console.log("EEK");
+      }
+    });
+    console.log("sent to " + count + " clients");
   });
 }
 
-
-//http://cdn.dota2.com/apps/dota2/images/heroes/bloodseeker_full.png
-//http://cdn.dota2.com/apps/dota2/images/items/force_staff_lg.png
-
-
+setInterval(sendUpdates, update_interval_ms);
 

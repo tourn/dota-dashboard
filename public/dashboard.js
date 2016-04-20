@@ -74,9 +74,8 @@
   function connect(id){
     var ws = new WebSocket("ws://"+location.host+"/updates/" + id, "dota-dashboard");
     ws.onopen = function(){
-      //socket.send("hi from the browser!");
       console.log("OPEN");
-      //content.innerText = "Connected";
+      content.innerText = "Connected";
     };
 
     ws.onmessage = function(e){

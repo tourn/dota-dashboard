@@ -6,7 +6,11 @@ var Aggregator = function(){
   this.matches = matches;
   this.process = function(data){
     store(data);
-    return render(data.map.matchid);
+    //return render(data.map.matchid);
+  };
+
+  this.get = function(id){
+    return render(id);
   };
 
   function store(data){
