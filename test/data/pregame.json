@@ -44,7 +44,7 @@
 		"buyback_cooldown": 0,
 		"health": 617,
 		"max_health": 617,
-		"health_percent": 100,
+		"health_percent": 85,
 		"mana": 234,
 		"max_mana": 234,
 		"mana_percent": 100,

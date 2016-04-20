@@ -1,39 +1,132 @@
-<!doctype HTML>
-<html>
-  <head>
-    <script src="handlebars.min.js"></script>
-    <script id="match-template" type="text/x-handlebars-template" src="match.handlebars">
-<div class="time">
-  {{clock_time}}
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Dota Dashboard</title>
+  <meta name="author" content="Daniel Latzer">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <style>
+  .dead{
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+  }
+  .itemimg {
+    width: 15%;
+  }
+  .bar {
+    background: #ddd;
+    width: 100%;
+    height: 3rem;
+    padding: 2% 0;
+    margin-bottom: 1rem;
+  }
+  .bar > span{
+    padding: 0 10%;
+    position: relative;
+    z-index: 1;
+  }
+  .bar > div {
+    height:90%;
+    position: relative;
+  }
+  .health {
+    background: #A1D490;
+  }
+  .mana {
+    background: #90C3D4;
+  }
+  </style>
+  <script src="handlebars.min.js"></script>
+  <script id="match-template" type="text/x-handlebars-template" src="match.handlebars">
+  <div class="row">
+    <div class="twelve columns">
+      <h3>Game Time: {{clock clock_time}}</h3>
+    </div>
+  </div>
 {{#each players}}
-  <div class="player">
-    {{{heroImage hero.name}}}
-    {{#with player}}
-    {{name}}
-    {{kills}} / {{deaths}} / {{assists}}
-    LH: {{last_hits}} DN: {{denies}}
-    Streak: {{kill_streak}}
-    Gold: {{gold}}
-    GPM: {{gpm}}
-    XPM: {{xpm}}
+  <div class="row">
+    <div class="one column">
+      <h3>{{hero.level}}</h3>
+      <h5>{{player.name}}</h5>
+    </div>
+    <div class="two columns offset-by-one-column">
+      {{{heroImage hero.name hero.alive}}}
+    </div>
+    {{#with hero}}
+    <div class="two columns offset-by-three-columns">
+      {{#if alive}}
+      <div class="bar">
+        <span class="u-pull-left">{{health}} / {{max_health}}</span>
+        <div class="health" style="width: {{health_percent}}%"></div>
+      </div>
+      <div class="bar">
+          <span class="u-pull-left">{{mana}} / {{max_mana}}</span>
+        <div class="mana" style="width: {{mana_percent}}%">
+        </div>
+      </div>
+      {{else}}
+        <h4>{{respawn_seconds}}</h4>
+      {{/if}}
     {{/with}}
-    <div class="items">
+      BB: {{buyback hero player}}
+    </div>
+    <div class="items seven columns offset-by-five-columns">
     {{#each items}}
       {{{itemImage name @key}}}
     {{/each}}
     </div>
+    {{#with player}}
+    <div class="two columns offset-by-five-columns">
+      <h5>{{kills}} / {{deaths}} / {{assists}}</h5>
+      Streak: {{kill_streak}}
+    </div>
+    <div class="three columns offset-by-seven-columns">
+      <h5>Gold: {{gold}}</h5>
+      LH: {{last_hits}} 
+      DN: {{denies}}<br/>
+    </div>
+    <div class="two columns offset-by-ten-columns">
+      GPM: {{gpm}}<br/>
+      XPM: {{xpm}}
+    </div>
+    {{/with}}
   </div>
 {{/each}}
-    </script>
-    <script></script>
-  </head>
-  <body>
-    <h1>Dota Dashboard</h1>
-    <div id="content">
-      <input id="id" type="text" placeholder="match-id"/>
-      <button id="track">track</button>
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <h1>Dota Dashboard</h1>
+      </div>
     </div>
-    <script src="dashboard.js"></script>
-  </body>
+    <div id="content">
+      <div class="twelve columns">
+        <input id="id" type="text" placeholder="match-id"/>
+        <button id="track">track</button>
+      </div>
+    </div>
+  </div>
+  <script src="dashboard.js"></script>
+</body>
 </html>
