@@ -32,6 +32,9 @@
   .itemimg {
     width: 15%;
   }
+  .stashimg {
+    width: 7%;
+  }
   .bar {
     background: #ddd;
     width: 100%;
@@ -92,6 +95,11 @@
     <div class="items seven columns offset-by-five-columns">
     {{#each items}}
       {{{itemImage name @key}}}
+    {{/each}}
+    </div>
+    <div class="items seven columns offset-by-five-columns">
+    {{#each items}}
+      {{{stashImage name @key}}}
     {{/each}}
     </div>
     {{#with player}}

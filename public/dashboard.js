@@ -58,6 +58,18 @@
       );
     }
   });
+  Handlebars.registerHelper('stashImage', function(name, key){
+    if(key.indexOf('stash') === -1) {return "";}
+
+    name = name.replace('item_','');
+    if(name === 'empty'){
+      return new Handlebars.SafeString("<span class='stashimg'></span>");
+    } else {
+      return new Handlebars.SafeString(
+          "<img src='http://cdn.dota2.com/apps/dota2/images/items/"+name+"_lg.png' class='stashimg'/>"
+      );
+    }
+  });
   var template = Handlebars.compile(document.getElementById("match-template").innerText);
 
   function connect(id){
