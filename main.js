@@ -5,22 +5,40 @@ var bodyParser = require('body-parser');
 var app = express();
 require('express-ws')(app);
 var Aggregator = require('./aggregator');
-var Notifier = require('./notifier');
+var request = require('request');
 
-var appPort = 1234;
-var update_interval_ms = 1000;
+var config = require('./config');
+
 var clients = {};
 var aggregator = new Aggregator();
-var notifier = new Notifier();
+
+aggregator.notifier = function(match){
+  var players = Object.keys(match.players).map(function(steamid){
+    return match.players[steamid].player.name;
+  });
+  var gamename = match.customgamename || 'Dota';
+  var msg = players.join(", ") + " just started a match of " + gamename + ". [Dashboard]("+config.webUrl+"#"+match.matchid+")";
+  console.log(msg);
+  sendToTelegram(msg);
+};
+
+function sendToTelegram(msg){
+  request.post({
+    url: 'https://api.telegram.org/bot'+config.telebotToken+'/sendMessage',
+    formData: {
+      chat_id: config.chatId,
+      parse_mode: "markdown",
+      text: msg
+    }
+  });
+}
 
 app.use(bodyParser.json());
 app.use('/', express.static(__dirname + '/public'));
 
 app.post('/', function(req, res){
   console.log("got update!");
-  var id = req.body.map.matchid;
   aggregator.process(req.body);
-  notifier.process(id);
   res.send();
 });
 app.ws('/updates/:id', function(ws, req){
@@ -34,10 +52,11 @@ app.ws('/updates/:id', function(ws, req){
   });
 });
 
-app.listen(appPort);
-console.log('Webserver running on port '+appPort);
+app.listen(config.appPort);
+console.log('Webserver running on port '+config.appPort);
 
 function sendUpdates(){
+  aggregator.tickNotify();
   console.log("sendUpdates");
   Object.keys(clients).forEach(function(matchid){
     var matchClients = clients[matchid];
@@ -50,11 +69,12 @@ function sendUpdates(){
         ws.send(JSON.stringify(match));
       } else {
         console.log("EEK");
+        //TODO clean out closed sockets?
       }
     });
     console.log("sent to " + count + " clients");
   });
 }
 
-setInterval(sendUpdates, update_interval_ms);
+setInterval(sendUpdates, config.update_interval_ms);
 

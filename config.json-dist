@@ -1,0 +1,8 @@
+
+{
+  "appPort": 1234,
+  "update_interval_ms": 1000,
+  "webUrl": "http://example.com:1234/",
+  "telebotToken": "secret",
+  "chatId": "secret"
+}

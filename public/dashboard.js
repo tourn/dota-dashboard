@@ -79,7 +79,8 @@
     };
 
     ws.onmessage = function(e){
-      console.log("MESSAGE" + e.data);
+      //console.log("MESSAGE" + e.data);
+      console.log("MESSAGE");
       content.innerHTML = template(JSON.parse(e.data));
     };
 
