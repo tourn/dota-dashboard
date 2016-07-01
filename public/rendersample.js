@@ -260,7 +260,7 @@ var sample = {"players":{
     },
   "items": {
       "slot0": {
-            "name": "item_branches",
+            "name": "item_aegis",
             "can_cast": true,
             "cooldown": 0,
             "passive": false
@@ -794,6 +794,8 @@ var sample = {"players":{
           }
     }
 }
-}
-,"clock_time":-39};
+},
+"clock_time":721 ,
+"aegis_pickup": 60
+};
 content.innerHTML = template(sample);

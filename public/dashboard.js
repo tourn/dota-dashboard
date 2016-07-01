@@ -26,6 +26,14 @@
 
   Handlebars.registerHelper('clock', formatTime);
 
+  Handlebars.registerHelper('roshan', function(pickupTime, gameTime){
+    if(pickupTime < 0 || gameTime - pickupTime > 11*60){
+      return "Up";
+    } else {
+      return formatTime(pickupTime + 8*60) + " - " + formatTime(pickupTime + 11*60);
+    }
+  });
+
   Handlebars.registerHelper('buyback', function(hero, player){
     if(hero.buyback_cooldown) { return "No ("+formatTime(hero.buyback_cooldown)+")"; }
     var unreliable_gold_after_death = Math.max(0, player.gold_unreliable - 30 * hero.level);

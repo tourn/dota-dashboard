@@ -62,7 +62,11 @@
   <script id="match-template" type="text/x-handlebars-template">
   <div class="row">
     <div class="twelve columns">
-      <h3>Game Time: {{clock clock_time}}</h3>
+      <h3>
+        Game Time: {{clock clock_time}} 
+        /
+        Roshan: {{roshan aegis_pickup clock_time}}
+      </h3>
     </div>
   </div>
 {{#each players}}
