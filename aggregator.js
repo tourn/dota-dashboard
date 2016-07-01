@@ -50,8 +50,29 @@ var Aggregator = function(){
     match.clock_time = data.map.clock_time;
     match.name = data.map.name;
     match.matchid = data.map.matchid;
-    match.game_state = match.players[data.player.steamid].map.game_state || 'ifuckedup'
+    match.game_state = match.players[data.player.steamid].map.game_state || 'ifuckedup';
+    if(aegisAvailable(match) && aegisPickedUp(match)){
+      match.aegis_pickup = match.clock_time;
+    }
   }
+
+  function aegisAvailable(match){
+    return match.clock_time - match.aegis_pickup >= 8*60;
+  }
+
+  function aegisPickedUp(match){
+    for(var key in match.players){
+      if(!match.players.hasOwnProperty(key)) { continue; }
+      var player = match.players[key];
+      for(var ikey in player.items){
+        if(!player.items.hasOwnProperty(ikey)) { continue; }
+        var item = player.items[ikey];
+        if(item.name === 'item_aegis') { return true; }
+      }
+    }
+    return false;
+  }
+
 
   function render(matchid){
     return matches[matchid];
@@ -61,6 +82,7 @@ var Aggregator = function(){
     var match = matches[id];
     if(!match){
       match = { players: {} };
+      match.aegis_pickup = -1000;
       matches[id] = match;
     }
     return match;

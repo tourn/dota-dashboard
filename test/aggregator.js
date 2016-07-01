@@ -78,4 +78,45 @@ describe('Aggregator', function(){
     });
   });
 
+  describe('aegis tracker', function(){
+    beforeEach(function(){
+      data.map.clock_time = 0;
+      aggregator.process(data);
+
+      assert(aggregator.get(1337).aegis_pickup < 0);
+
+      data.map.clock_time = 60;
+      data.items.slot0.name = 'item_aegis';
+      aggregator.process(data);
+    });
+
+    it('sets the pickup timer correctly', function(){
+      assert.equal(60, aggregator.get(1337).aegis_pickup);
+    });
+
+    it('keeps the timer when aegis gets lost', function(){
+      data.map.clock_time = 120;
+      data.items.slot0.name = '';
+      aggregator.process(data);
+      assert.equal(60, aggregator.get(1337).aegis_pickup);
+    });
+
+    it('does not check for aegis for 8 minutes after pickup', function(){
+      data.map.clock_time = 120;
+      aggregator.process(data);
+      assert.equal(60, aggregator.get(1337).aegis_pickup);
+    });
+
+    it('detects new aegis when rosh can respawn', function(){
+      data.map.clock_time = 120;
+      data.items.slot0.name = '';
+      aggregator.process(data); //lose aegis
+
+      data.map.clock_time = 540;
+      data.items.slot0.name = 'item_aegis';
+      aggregator.process(data); //pick new aegis
+      assert.equal(540, aggregator.get(1337).aegis_pickup);
+    });
+
+  });
 });
