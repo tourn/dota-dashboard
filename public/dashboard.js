@@ -53,15 +53,19 @@
         "<img src='http://cdn.dota2.com/apps/dota2/images/heroes/"+name+"_full.png' class='u-full-width "+deadClass+"'/>"
     );
   });
-  Handlebars.registerHelper('itemImage', function(name, key){
+  Handlebars.registerHelper('itemImage', function(name, key, pickupTime, gameTime){
     if(key.indexOf('slot') === -1) {return "";}
 
     name = name.replace('item_','');
     if(name === 'empty'){
       return new Handlebars.SafeString("<span class='itemimg'></span>");
+    } else if (name === 'aegis') {
+      return new Handlebars.SafeString(
+          "<span class='item-container'><span>"+formatTime(pickupTime+300-gameTime)+"</span><img src='http://cdn.dota2.com/apps/dota2/images/items/"+name+"_lg.png' class='itemimg'/></span>"
+      );
     } else {
       return new Handlebars.SafeString(
-          "<img src='http://cdn.dota2.com/apps/dota2/images/items/"+name+"_lg.png' class='itemimg'/>"
+          "<span class='item-container'><img src='http://cdn.dota2.com/apps/dota2/images/items/"+name+"_lg.png' class='itemimg'/></span>"
       );
     }
   });

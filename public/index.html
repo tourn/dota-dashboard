@@ -57,6 +57,15 @@
   .mana {
     background: #90C3D4;
   }
+  .item-container{
+    position: relative;
+  }
+  .item-container span{
+    position: absolute;
+    color: white;
+    top: -1em;
+    left: 0;
+  }
   </style>
   <script src="handlebars.min.js"></script>
   <script id="match-template" type="text/x-handlebars-template">
@@ -98,7 +107,7 @@
     </div>
     <div class="items seven columns offset-by-five-columns">
     {{#each items}}
-      {{{itemImage name @key}}}
+      {{{itemImage name @key ../../aegis_pickup ../../clock_time}}}
     {{/each}}
     </div>
     <div class="items seven columns offset-by-five-columns">
@@ -140,6 +149,8 @@
     </div>
   </div>
   <script src="dashboard.js"></script>
+  <!--
   <script src="rendersample.js"></script>
+  -->
 </body>
 </html>

@@ -795,7 +795,7 @@ var sample = {"players":{
     }
 }
 },
-"clock_time":721 ,
+"clock_time":140 ,
 "aegis_pickup": 60
 };
 content.innerHTML = template(sample);
