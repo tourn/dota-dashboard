@@ -30,7 +30,7 @@ describe('Aggregator', function(){
     assert.strictEqual(undefined, result);
   });
 
-  it.skip('Ignores data of spectators', function(){
+  it('Ignores data of spectators', function(){
     var data = require('./data/inprogress-spectator');
     aggregator.process(data);
     var result = aggregator.get('2439597301');

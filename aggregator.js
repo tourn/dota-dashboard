@@ -1,19 +1,21 @@
 "use strict";
 
-var notify_delay_ms = 20 * 1000;
-
 var Aggregator = function(){
   var self = this;
   var matches = {};
 
-  this.notifier = function() { console.log('NULL NOTIF')}; //null notifier
+  this.notifier = function() { console.log('NULL NOTIF'); }; //null notifier
   this.matches = matches;
   this.process = function(data){
-    if(data.map && data.map.matchid !== 0){
+    if(data.map && data.map.matchid !== 0 && !is_spectator(data)){
       store(data);
     }
     //return render(data.map.matchid);
   };
+
+  function is_spectator(data){
+    return !!data.map.roshan_state;
+  }
 
   this.get = function(id){
     return render(id);
