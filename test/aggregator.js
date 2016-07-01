@@ -77,4 +77,5 @@ describe('Aggregator', function(){
       assert.strictEqual(false, notify.called);
     });
   });
+
 });
