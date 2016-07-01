@@ -16,8 +16,7 @@ aggregator.notifier = function(match){
   var players = Object.keys(match.players).map(function(steamid){
     return match.players[steamid].player.name;
   });
-  var gamename = match.customgamename || 'Dota';
-  var msg = players.join(", ") + " just started a match of " + gamename + ". [Dashboard]("+config.webUrl+"#"+match.matchid+")";
+  var msg = players.join(", ") + " just started a match of " + match.name.replace('_',' ') + ". [Dashboard]("+config.webUrl+"#"+match.matchid+")";
   console.log(msg);
   sendToTelegram(msg);
 };
@@ -30,6 +29,8 @@ function sendToTelegram(msg){
       parse_mode: "markdown",
       text: msg
     }
+  }, function(err, resp, body){
+	console.log(body);
   });
 }
 
@@ -37,7 +38,7 @@ app.use(bodyParser.json());
 app.use('/', express.static(__dirname + '/public'));
 
 app.post('/', function(req, res){
-  console.log("got update!");
+  console.log("got update! ");
   aggregator.process(req.body);
   res.send();
 });
@@ -63,15 +64,17 @@ function sendUpdates(){
     var match = aggregator.get(matchid);
     console.log("match " + matchid);
     var count = 0;
-    matchClients.forEach(function(ws){
+    //matchClients.forEach(function(ws){
+    for(var i = matchClients.length -1; i >= 0; i--){
+      var ws = matchClients[i];
       if(ws.readyState === 1){
         count++;
         ws.send(JSON.stringify(match));
       } else {
-        console.log("EEK");
-        //TODO clean out closed sockets?
+				matchClients.splice(i, 1); //clean out closed socket
+				console.log("removed empty socket " + ws);
       }
-    });
+    }
     console.log("sent to " + count + " clients");
   });
 }
