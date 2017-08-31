@@ -35,9 +35,8 @@ var Aggregator = function(){
   function shouldNotify(match){
       if(match.notified) { return false; }
       //if(new Date() - match.newPlayerTime < notify_delay_ms) { return false; }
-      if(Object.keys(match.players).length < 2) { console.log("skip notify cause too few players"); return false; }
-      if(match.game_state !== 'DOTA_GAMERULES_STATE_PRE_GAME' && match.game_state !== 'DOTA_GAMERULES_STATE_GAME_IN_PROGRESS') { console.log("skip notify cause gs:" + match.game_state); return false; }
-      console.log("NOTIFIED!");
+      if(Object.keys(match.players).length < 2) { return false; }
+      if(match.game_state !== 'DOTA_GAMERULES_STATE_PRE_GAME' && match.game_state !== 'DOTA_GAMERULES_STATE_GAME_IN_PROGRESS') { return false; }
       return true;
   }
 
